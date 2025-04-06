@@ -1,0 +1,100 @@
+<project name="weblab3" default="build" basedir="."
+  xmlns:ivy="antlib:org.apache.ivy.ant">
+  <!-- properties -->
+  <property name="src.dir" value="app/src/main/java"/>
+  <property name="build.dir" value="build/classes"/>
+  <property name="build.lib.dir" value="build/WEB-INF/lib"/>
+  <property name="classes.dir" value="build/WEB-INF/classes"/>
+  <property name="resources.dir" value="app/src/main/resources"/>
+  <property name="dist.dir" value="dist"/>
+  <property name="webapp.dir" value="app/src/main/webapp"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="env.file" value="app/.env"/>
+  <property name="native2ascii.resources" value="app/src/main/resources /native2ascii" />
+
+
+  <!-- Load Ivy -->
+  <taskdef name="ivy" classname="org.apache.ivy.ant.IvyTask" classpath="lib/ivy.jar"/>
+  <typedef resource="org/apache/ivy/ant/antlib.xml"/>
+
+  <!-- Ivy settings -->
+  <target name="init-ivy">
+    <ivy:settings/>
+  </target>
+
+  <!-- Resolve dependencies -->
+  <target name="resolve" depends="init-ivy">
+    <ivy:resolve/>
+    <ivy:retrieve pattern="lib/[conf]/[artifact]-[type]-[revision](-[classifier]).[ext]" />
+  </target>
+
+
+
+  <!-- directories -->
+  <target name="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+    <mkdir dir="${lib.dir}"/>
+  </target>
+
+  <!-- copy .env -->
+  <target name="copy-env">
+    <copy file="${env.file}" todir="${build.dir}"/>
+  </target>
+
+  <!-- copy resources -->
+  <target name="copy-resources">
+    <copy todir="${build.dir}">
+      <fileset dir="app/src/main/resources" />
+    </copy>
+  </target>
+
+  <!-- compile Java -->
+  <target name="compile" depends="init">
+    <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!-- typescript -->
+  <target name="compile-ts">
+    <exec executable="pnpm">
+      <arg value="run"/>
+      <arg value="bundle"/>
+    </exec>
+  </target>
+
+  <!-- war -->
+  <target name="war" depends="compile, copy-env, copy-resources, compile-ts">
+    <copy todir="${build.dir}">
+      <fileset dir="${webapp.dir}"/>
+    </copy>
+    <copy todir="${build.lib.dir}">
+      <fileset dir="lib/default"/>
+    </copy>
+    <copy todir="${classes.dir}">
+      <fileset dir="${resources.dir}"/>
+    </copy>
+    <war destfile="${dist.dir}/app.war" webxml="app/src/main/webapp/WEB-INF/web.xml">
+      <fileset dir="${build.dir}"/>
+      <lib dir="${build.lib.dir}"/>
+    </war>
+  </target>
+
+  <!-- clean -->
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <!-- native2ascii -->
+  <target name="native2ascii">
+    <delete dir="${native2ascii.resources}"/>
+    <native2ascii src="${resources.dir}" dest="${native2ascii.resources}" includes="**/*.properties"/>
+  </target>
+
+  <!-- default target -->
+  <target name="build" depends="resolve, war"/>
+</project>

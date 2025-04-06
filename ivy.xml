@@ -1,0 +1,16 @@
+<ivy-module version="2.0">
+  <info organisation="ru.lavrent" module="weblab3"/>
+  <dependencies>
+    <dependency org="org.primefaces" name="primefaces" rev="13.0.0"/>
+    <dependency org="jakarta.enterprise" name="jakarta.enterprise.cdi-api" rev="3.0.0"/>
+    <dependency org="jakarta.persistence" name="jakarta.persistence-api" rev="3.0.0"/>
+    <dependency org="jakarta.faces" name="jakarta.faces-api" rev="4.0.1"/>
+    <dependency org="jakarta.servlet" name="jakarta.servlet-api" rev="5.0.0"/>
+    <dependency org="org.glassfish" name="jakarta.faces" rev="3.0.3"/>
+    <dependency org="com.google.code.gson" name="gson" rev="2.11.0"/>
+    <dependency org="com.google.guava" name="guava" rev="32.1.1-jre"/>
+    <dependency org="org.eclipse.persistence" name="eclipselink" rev="4.0.4"/>
+    <dependency org="org.postgresql" name="postgresql" rev="42.7.4"/>
+    <dependency org="io.github.cdimascio" name="dotenv-java" rev="3.0.2"/>
+  </dependencies>
+</ivy-module>
