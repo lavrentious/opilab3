@@ -1,5 +1,15 @@
 <project name="weblab3" default="build" basedir="."
-  xmlns:ivy="antlib:org.apache.ivy.ant">
+  xmlns:ivy="antlib:org.apache.ivy.ant"
+  xmlns:contrib="antlib:net.sf.antcontrib">
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="${basedir}/.ant/lib/ant-contrib.jar" />
+    </classpath>
+  </taskdef>
+
+
+
+
   <!-- properties -->
   <property name="src.dir" value="app/src/main/java"/>
   <property name="build.dir" value="build"/>
@@ -7,6 +17,8 @@
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="resources.dir" value="app/src/main/resources"/>
   <property name="dist.dir" value="dist"/>
+  <property name="tmp.dir" value="tmp"/>
+  <property name="zip.file" value="${dist.dir}/build-revisions.zip"/>
   <property name="war.file" value="${dist.dir}/app_ant.war"/>
   <property name="jar.file" value="${dist.dir}/app_ant.jar"/>
   <property name="webapp.dir" value="app/src/main/webapp"/>
@@ -42,6 +54,7 @@
     <mkdir dir="${build.lib.dir}"/>
     <mkdir dir="${dist.dir}"/>
     <mkdir dir="${lib.dir}"/>
+    <mkdir dir="${tmp.dir}"/>
   </target>
 
   <!-- compile Java -->
@@ -202,6 +215,67 @@
     </exec>
     <echo message="done" />
   </target>
+
+
+  <target name="get-last-revisions" depends="init">
+    <exec executable="./scripts/get-last-commits-hashes.sh">
+      <arg value="4"/>
+      <arg value="${tmp.dir}/git-revisions.txt"/>
+    </exec>
+
+    <echo message="Last 4 revisions stored in ${tmp.dir}/git-revisions.txt"/>
+    <loadfile property="commit.hashes" srcFile="${tmp.dir}/git-revisions.txt"/>
+    <echo message="${commit.hashes}"/>
+  </target>
+
+
+  <target name="build-revision">
+    <echo message="Building revision ${revision}..."/>
+
+    <exec executable="git">
+      <arg value="checkout"/>
+      <arg value="${revision}"/>
+    </exec>
+
+    <ant antfile="build.xml" target="build-jar"/>
+
+    <mkdir dir="${tmp.dir}/revisions/${revision}"/>
+    <copy todir="${tmp.dir}/revisions/${revision}">
+      <fileset file="${jar.file}" />
+    </copy>
+  </target>
+
+
+
+  <target name="team" depends="get-last-revisions">
+    <!-- check git working tree is clear -->
+    <exec executable="git" outputproperty="git.status">
+      <arg value="status"/>
+      <arg value="--porcelain"/>
+    </exec>
+    <condition property="git.is.dirty">
+      <not>
+        <equals arg1="${git.status}" arg2=""/>
+      </not>
+    </condition>
+    <!-- <fail message="git tree is not clean, make sure to commit or stash all changes" if="git.is.dirty"/> -->
+    <mkdir dir="${tmp.dir}/revisions"/>
+
+    <foreach target="build-revision" list="${commit.hashes}" delimiter="," param="revision"/>
+
+    <!-- Pack all builds into a ZIP -->
+    <zip destfile="${zip.file}" basedir="${tmp.dir}/revisions">
+      <include name="**/*"/>
+    </zip>
+
+    <echo message="Zipped the builds of last 4 revisions into ${zip.file}"/>
+    <echo message="checking out to master"/>
+    <exec executable="git">
+      <arg value="checkout"/>
+      <arg value="master"/>
+    </exec>
+  </target>
+
 
   <!-- default target -->
   <target name="build" depends="resolve, build-war"/>
