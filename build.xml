@@ -10,7 +10,7 @@
   <property name="war.file" value="${dist.dir}/app_ant.war"/>
   <property name="webapp.dir" value="app/src/main/webapp"/>
   <property name="lib.dir" value="lib"/>
-  <property name="env.file" value="app/.env"/>
+  <property name="env.file" value="app/env.properties"/>
   <property name="native2ascii.resources" value="app/src/main/resources /native2ascii" />
 
 
@@ -158,11 +158,31 @@
   </target>
 
   <!-- music -->
-  <target name="music">
+  <target name="music" depends="build">
     <property name="music.file" value="sound_fx/music.mp3"/>
     <exec executable="mpg123">
       <arg value="${music.file}"/>
     </exec>
+  </target>
+
+  <!-- env -->
+  <target name="env">
+    <available file="${env.file}" property="env.file.exists" type="file"/>
+    <property file="${env.file}"/>
+    <fail unless="env.file.exists" message="Файл окружения ${env.file} не найден"/>
+    <fail unless="env.java.version" message="В файле ${env.file} не указана env.java.version"/>
+
+
+    <echo message="Компиляция с Java ${env.java.version}"/>
+    <mkdir dir="build/classes"/>
+    <javac srcdir="${src.dir}"
+           destdir="${build.classes.dir}"
+           includeantruntime="false"
+           release="${env.java.version}">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+      </classpath>
+    </javac>
   </target>
 
 
