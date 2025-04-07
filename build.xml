@@ -186,10 +186,7 @@
 
     <echo message="Compiling via Java ${env.java.version}"/>
     <mkdir dir="build/classes"/>
-    <javac srcdir="${src.dir}"
-           destdir="${build.classes.dir}"
-           includeantruntime="false"
-           release="${env.java.version}">
+    <javac srcdir="${src.dir}" destdir="${build.classes.dir}" includeantruntime="false" release="${env.java.version}">
       <classpath>
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
       </classpath>
@@ -207,5 +204,5 @@
   </target>
 
   <!-- default target -->
-  <target name="build" depends="resolve, build-war, music"/>
+  <target name="build" depends="resolve, build-war"/>
 </project>
