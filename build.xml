@@ -8,6 +8,7 @@
   <property name="resources.dir" value="app/src/main/resources"/>
   <property name="dist.dir" value="dist"/>
   <property name="war.file" value="${dist.dir}/app_ant.war"/>
+  <property name="jar.file" value="${dist.dir}/app_ant.jar"/>
   <property name="webapp.dir" value="app/src/main/webapp"/>
   <property name="lib.dir" value="lib"/>
   <property name="env.file" value="app/.env"/>
@@ -98,6 +99,19 @@
       <lib dir="${lib.dir}/default"/>
     </war>
     <echo message="build done. war file: ${war.file}"/>
+  </target>
+
+
+  <target name="build-jar" depends="compile">
+    <mkdir dir="${dist.dir}"/>
+    <jar destfile="${jar.file}" basedir="${build.classes.dir}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+        <!-- <attribute name="Main-Class" value="ru.lavrent.weblab3.Main"/> -->
+        <attribute name="Build-Date" value="${TODAY}"/>
+      </manifest>
+    </jar>
+    <echo message="build done. war file: ${jar.file}"/>
   </target>
 
 
