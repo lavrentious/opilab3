@@ -15,8 +15,8 @@
 
 
   <!-- Load Ivy -->
-  <taskdef name="ivy" classname="org.apache.ivy.ant.IvyTask" classpath="lib/ivy.jar"/>
-  <typedef resource="org/apache/ivy/ant/antlib.xml"/>
+  <!-- <taskdef name="ivy" classname="org.apache.ivy.ant.IvyTask" classpath="lib/ivy-2.5.3.jar"/>
+  <typedef resource="org/apache/ivy/ant/antlib.xml"/> -->
 
   <!-- Ivy settings -->
   <target name="init-ivy">
