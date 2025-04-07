@@ -38,5 +38,5 @@ app/src/main/webapp/resources/js/
 node_modules/
 *.env
 
-lib
+
 dist
