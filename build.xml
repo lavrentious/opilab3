@@ -110,13 +110,14 @@
   </target>
 
   <!-- doc -->
-  <property name="TODAY" value="${TODAY}"/>
   <tstamp>
     <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss"/>
   </tstamp>
+  <property name="TODAY" value="${TODAY}"/>
   <path id="compile.classpath">
     <fileset dir="${lib.dir}" includes="**/*.jar"/>
   </path>
+
   <target name="doc" depends="compile">
     <!-- adding hashes to MANIFEST -->
     <mkdir dir="${build.dir}/META-INF"/>
