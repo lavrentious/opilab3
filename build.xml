@@ -132,6 +132,7 @@
   <target name="clean">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
+    <delete dir="${tmp.dir}"/>
   </target>
 
   <!-- native2ascii -->
