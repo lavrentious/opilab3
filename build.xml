@@ -13,6 +13,9 @@
   <property name="env.file" value="app/.env"/>
   <property name="native2ascii.resources" value="app/src/main/resources /native2ascii" />
 
+  <property name="remote.host" value="itmo"/>
+  <property name="remote.path" value="/home/studs/s408968" />
+
 
   <!-- Load Ivy -->
   <!-- <taskdef name="ivy" classname="org.apache.ivy.ant.IvyTask" classpath="lib/ivy-2.5.3.jar"/>
@@ -139,14 +142,7 @@
 
     <!-- generating javadoc -->
     <mkdir dir="${dist.dir}/javadoc"/>
-    <javadoc
-            destdir="${build.dir}/javadoc"
-            sourcepath="${src.dir}"
-            classpathref="compile.classpath"
-            author="true"
-            version="true"
-            use="true"
-            windowtitle="WEBLAB3 Documentation">
+    <javadoc destdir="${build.dir}/javadoc" sourcepath="${src.dir}" classpathref="compile.classpath" author="true" version="true" use="true" windowtitle="WEBLAB3 Documentation">
 
       <fileset dir="${src.dir}">
         <include name="**/*.java"/>
@@ -165,6 +161,17 @@
     </exec>
   </target>
 
+
+
+  <!-- scp -->
+  <target name="scp">
+    <echo message="copying local ${war.file} to ${remote.path} (host=${remote.host})..." />
+    <exec executable="scp">
+      <arg value="${war.file}"/>
+      <arg value="${remote.host}:${remote.path}"/>
+    </exec>
+    <echo message="done" />
+  </target>
 
   <!-- default target -->
   <target name="build" depends="resolve, build-war"/>
