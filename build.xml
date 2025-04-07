@@ -277,6 +277,13 @@
     </exec>
   </target>
 
+  <target name="history" depends="init">
+    <exec executable="./scripts/build-until-success.sh">
+      <arg value="20"/>
+      <arg value="${dist.dir}/diff.txt"/>
+    </exec>
+  </target>
+
 
   <!-- default target -->
   <target name="build" depends="resolve, build-war"/>
