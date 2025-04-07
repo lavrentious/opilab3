@@ -23,7 +23,8 @@
   <property name="jar.file" value="${dist.dir}/app_ant.jar"/>
   <property name="webapp.dir" value="app/src/main/webapp"/>
   <property name="lib.dir" value="lib"/>
-  <property name="env.file" value="app/env.properties"/>
+  <property name="env.file" value="app/.env"/>
+  <property name="env.properties.file" value="app/env.properties"/>
   <property name="native2ascii.resources" value="app/src/main/resources /native2ascii" />
 
   <property name="remote.host" value="itmo"/>
@@ -85,6 +86,7 @@
     <!-- copy .env -->
     <copy todir="${build.classes.dir}">
       <fileset file="${env.file}"/>
+      <fileset file="${env.properties.file}"/>
     </copy>
 
     <!-- copy java classes -->
