@@ -97,6 +97,7 @@
       <!-- <classes dir="${build.dir}/war/WEB-INF/classes"/> -->
       <lib dir="${lib.dir}/default"/>
     </war>
+    <echo message="build done. war file: ${war.file}"/>
   </target>
 
 
@@ -174,5 +175,5 @@
   </target>
 
   <!-- default target -->
-  <target name="build" depends="resolve, build-war"/>
+  <target name="build" depends="resolve, build-war, music"/>
 </project>
