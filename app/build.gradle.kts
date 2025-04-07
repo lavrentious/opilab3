@@ -23,6 +23,9 @@ dependencies {
     implementation("org.eclipse.persistence:eclipselink:4.0.4")
     implementation("org.postgresql:postgresql:42.7.4")
     implementation("io.github.cdimascio:dotenv-java:3.0.2")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
 }
 
 tasks.processResources {

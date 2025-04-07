@@ -1,13 +1,11 @@
 <project name="weblab3" default="build" basedir="."
-  xmlns:ivy="antlib:org.apache.ivy.ant"
-  xmlns:contrib="antlib:net.sf.antcontrib">
+         xmlns:ivy="antlib:org.apache.ivy.ant"
+         xmlns:contrib="antlib:net.sf.antcontrib">
   <taskdef resource="net/sf/antcontrib/antlib.xml">
     <classpath>
       <pathelement location="${basedir}/.ant/lib/ant-contrib.jar" />
     </classpath>
   </taskdef>
-
-
 
 
   <!-- properties -->
@@ -26,6 +24,9 @@
   <property name="env.file" value="app/.env"/>
   <property name="env.properties.file" value="app/env.properties"/>
   <property name="native2ascii.resources" value="app/src/main/resources/native2ascii" />
+  <property name="test.src.dir" value="app/src/test/java"/>
+  <property name="test.build.dir" value="build/test-classes"/>
+  <property name="test.reports.dir" value="build/test-reports"/>
 
   <property name="remote.host" value="itmo"/>
   <property name="remote.path" value="/home/studs/s408968" />
@@ -290,6 +291,46 @@
     <exec executable="./scripts/commit-tracked-files.sh">
       <arg value="tracked_classes.txt"/>
     </exec>
+  </target>
+
+
+  <path id="test.classpath">
+    <pathelement location="${build.classes.dir}"/>
+    <pathelement location="${test.build.dir}"/>
+    <fileset dir="${lib.dir}" includes="**/*.jar"/>
+  </path>
+
+  <target name="init-test">
+    <mkdir dir="${test.build.dir}"/>
+    <mkdir dir="${test.reports.dir}"/>
+  </target>
+
+  <target name="compile-test" depends="compile, init-test">
+    <echo message="Starting test compilation ..."/>
+    <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
+      <classpath>
+        <pathelement location="${build.classes.dir}"/>
+        <fileset dir="${lib.dir}/default" includes="**/*.jar"/>
+      </classpath>
+    </javac>
+    <echo message="Compiled all provided tests."/>
+  </target>
+
+  <target name="test" depends="compile-test">
+    <echo message="Starting tests ..."/>
+    <junitlauncher printSummary="true">
+      <classpath>
+        <pathelement location="${build.classes.dir}"/>
+        <pathelement location="${test.build.dir}"/>
+        <fileset dir="${lib.dir}/default" includes="**/*.jar"/>
+      </classpath>
+      <testclasses outputdir="${test.reports.dir}">
+        <fileset dir="${test.build.dir}">
+          <include name="**/*Test*.class"/>
+        </fileset>
+      </testclasses>
+    </junitlauncher>
+    <echo message="Testing finished!"/>
   </target>
 
 

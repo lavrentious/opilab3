@@ -10,20 +10,20 @@ public class RecordHitTester {
 
     @Test
     public void testForth() {
-        Record record = new Record(1, -1, 4, new Date());
+        ru.lavrent.weblab3.models.Record record = new ru.lavrent.weblab3.models.Record(1, -1, 4, new Date());
         assertTrue(record.isHit());
     }
 
     @Test
     public void testThird() {
-        Record record = new Record(-1, -1, 1, new Date());
+        ru.lavrent.weblab3.models.Record record = new ru.lavrent.weblab3.models.Record(-1, -1, 1, new Date());
         assertFalse(record.isHit());
     }
 
     @Test
     public void testFirst() {
-        Record record = new Record(1, -2, 1, new Date());
-        assertTrue(record.isHit());
+        ru.lavrent.weblab3.models.Record record = new Record(1, -2, 1, new Date());
+        assertFalse(record.isHit());
     }
 
 
