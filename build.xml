@@ -25,7 +25,7 @@
   <property name="lib.dir" value="lib"/>
   <property name="env.file" value="app/.env"/>
   <property name="env.properties.file" value="app/env.properties"/>
-  <property name="native2ascii.resources" value="app/src/main/resources /native2ascii" />
+  <property name="native2ascii.resources" value="app/src/main/resources/native2ascii" />
 
   <property name="remote.host" value="itmo"/>
   <property name="remote.path" value="/home/studs/s408968" />
