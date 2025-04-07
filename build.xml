@@ -61,6 +61,9 @@
   <!-- typescript -->
   <target name="compile-ts">
     <exec executable="pnpm">
+      <arg value="install"/>
+    </exec>
+    <exec executable="pnpm">
       <arg value="run"/>
       <arg value="bundle"/>
     </exec>
