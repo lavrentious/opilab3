@@ -109,6 +109,62 @@
     <native2ascii src="${resources.dir}" dest="${native2ascii.resources}" includes="**/*.properties"/>
   </target>
 
+  <!-- doc -->
+  <property name="TODAY" value="${TODAY}"/>
+  <tstamp>
+    <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss"/>
+  </tstamp>
+  <path id="compile.classpath">
+    <fileset dir="${lib.dir}" includes="**/*.jar"/>
+  </path>
+  <target name="doc" depends="compile">
+    <!-- adding hashes to MANIFEST -->
+    <mkdir dir="${build.dir}/META-INF"/>
+
+    <checksum algorithm="MD5" fileext=".md5" totalproperty="project.md5">
+      <fileset dir="${build.dir}" includes="**/*.class" />
+    </checksum>
+
+    <checksum algorithm="SHA-1" fileext=".sha1" totalproperty="project.sha1">
+      <fileset dir="${build.dir}" includes="**/*.class" />
+    </checksum>
+
+    <manifest file="${build.dir}/META-INF/MANIFEST.MF">
+      <attribute name="Built-By" value="${user.name}"/>
+      <attribute name="Build-Date" value="${TODAY}"/>
+      <attribute name="Project-MD5" value="${project.md5}"/>
+      <attribute name="Project-SHA1" value="${project.sha1}"/>
+    </manifest>
+
+    <!-- generating javadoc -->
+    <mkdir dir="${dist.dir}/javadoc"/>
+    <javadoc
+            destdir="${build.dir}/javadoc"
+            sourcepath="${src.dir}"
+            classpathref="compile.classpath"
+            author="true"
+            version="true"
+            use="true"
+            windowtitle="WEBLAB3 Documentation">
+
+      <fileset dir="${src.dir}">
+        <include name="**/*.java"/>
+      </fileset>
+    </javadoc>
+
+    <zip destfile="${dist.dir}/javadoc.zip" basedir="${build.dir}/javadoc"/>
+
+  </target>
+
+  <!-- music -->
+  <target name="music">
+    <property name="music.file" value="sound_fx/music.mp3"/>
+    <exec executable="mpg123">
+      <arg value="${music.file}"/>
+    </exec>
+  </target>
+
+
   <!-- default target -->
   <target name="build" depends="resolve, build-war"/>
 </project>
