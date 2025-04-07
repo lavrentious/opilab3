@@ -93,8 +93,8 @@
     </copy>
 
     <!-- copy resources (beans.xml, persistence.xml) -->
-    <copy todir="${build.dir}/war/WEB-INF/classes/META-INF">
-      <fileset dir="${resources.dir}/META-INF"/>
+    <copy todir="${build.dir}/war/WEB-INF/classes">
+      <fileset dir="${resources.dir}"/>
     </copy>
 
     <!-- copy webapp -->
