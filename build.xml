@@ -208,7 +208,7 @@
   </target>
 
   <!-- scp -->
-  <target name="scp">
+  <target name="scp" depends="build-war">
     <echo message="copying local ${war.file} to ${remote.path} (host=${remote.host})..." />
     <exec executable="scp">
       <arg value="${war.file}"/>
