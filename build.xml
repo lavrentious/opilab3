@@ -8,10 +8,14 @@
   <property name="resources.dir" value="app/src/main/resources"/>
   <property name="dist.dir" value="dist"/>
   <property name="war.file" value="${dist.dir}/app_ant.war"/>
+  <property name="jar.file" value="${dist.dir}/app_ant.jar"/>
   <property name="webapp.dir" value="app/src/main/webapp"/>
   <property name="lib.dir" value="lib"/>
   <property name="env.file" value="app/env.properties"/>
   <property name="native2ascii.resources" value="app/src/main/resources /native2ascii" />
+
+  <property name="remote.host" value="itmo"/>
+  <property name="remote.path" value="/home/studs/s408968" />
 
 
   <!-- Load Ivy -->
@@ -94,6 +98,20 @@
       <!-- <classes dir="${build.dir}/war/WEB-INF/classes"/> -->
       <lib dir="${lib.dir}/default"/>
     </war>
+    <echo message="build done. war file: ${war.file}"/>
+  </target>
+
+
+  <target name="build-jar" depends="compile">
+    <mkdir dir="${dist.dir}"/>
+    <jar destfile="${jar.file}" basedir="${build.classes.dir}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+        <!-- <attribute name="Main-Class" value="ru.lavrent.weblab3.Main"/> -->
+        <attribute name="Build-Date" value="${TODAY}"/>
+      </manifest>
+    </jar>
+    <echo message="build done. war file: ${jar.file}"/>
   </target>
 
 
@@ -139,14 +157,7 @@
 
     <!-- generating javadoc -->
     <mkdir dir="${dist.dir}/javadoc"/>
-    <javadoc
-            destdir="${build.dir}/javadoc"
-            sourcepath="${src.dir}"
-            classpathref="compile.classpath"
-            author="true"
-            version="true"
-            use="true"
-            windowtitle="WEBLAB3 Documentation">
+    <javadoc destdir="${build.dir}/javadoc" sourcepath="${src.dir}" classpathref="compile.classpath" author="true" version="true" use="true" windowtitle="WEBLAB3 Documentation">
 
       <fileset dir="${src.dir}">
         <include name="**/*.java"/>
@@ -186,6 +197,17 @@
   </target>
 
 
+
+  <!-- scp -->
+  <target name="scp">
+    <echo message="copying local ${war.file} to ${remote.path} (host=${remote.host})..." />
+    <exec executable="scp">
+      <arg value="${war.file}"/>
+      <arg value="${remote.host}:${remote.path}"/>
+    </exec>
+    <echo message="done" />
+  </target>
+
   <!-- default target -->
-  <target name="build" depends="resolve, build-war"/>
+  <target name="build" depends="resolve, build-war, music"/>
 </project>
