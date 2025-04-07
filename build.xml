@@ -180,11 +180,11 @@
   <target name="env">
     <available file="${env.file}" property="env.file.exists" type="file"/>
     <property file="${env.file}"/>
-    <fail unless="env.file.exists" message="Файл окружения ${env.file} не найден"/>
-    <fail unless="env.java.version" message="В файле ${env.file} не указана env.java.version"/>
+    <fail unless="env.file.exists" message="Env file ${env.file} was not found"/>
+    <fail unless="env.java.version" message="In env file ${env.file} env.java.version is not set"/>
 
 
-    <echo message="Компиляция с Java ${env.java.version}"/>
+    <echo message="Compiling via Java ${env.java.version}"/>
     <mkdir dir="build/classes"/>
     <javac srcdir="${src.dir}"
            destdir="${build.classes.dir}"
@@ -195,8 +195,6 @@
       </classpath>
     </javac>
   </target>
-
-
 
   <!-- scp -->
   <target name="scp">
