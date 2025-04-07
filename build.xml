@@ -284,6 +284,12 @@
     </exec>
   </target>
 
+  <target name="diff">
+    <exec executable="./scripts/commit-tracked-files.sh">
+      <arg value="tracked_classes.txt"/>
+    </exec>
+  </target>
+
 
   <!-- default target -->
   <target name="build" depends="resolve, build-war"/>
