@@ -194,10 +194,10 @@
 
   <!-- env -->
   <target name="env">
-    <available file="${env.file}" property="env.file.exists" type="file"/>
-    <property file="${env.file}"/>
-    <fail unless="env.file.exists" message="Env file ${env.file} was not found"/>
-    <fail unless="env.java.version" message="In env file ${env.file} env.java.version is not set"/>
+    <available file="${env.properties.file}" property="env.properties.file.exists" type="file"/>
+    <property file="${env.properties.file}"/>
+    <fail unless="env.properties.file.exists" message="Env file ${env.properties.file} was not found"/>
+    <fail unless="env.java.version" message="In env file ${env.properties.file} env.java.version is not set"/>
 
 
     <echo message="Compiling via Java ${env.java.version}"/>
