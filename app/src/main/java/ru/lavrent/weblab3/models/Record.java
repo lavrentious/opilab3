@@ -50,7 +50,7 @@ public class Record implements Serializable {
   public static boolean checkHit(float x, float y, float r) {
     if (x >= 0 && y <= 0) {
       return Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r / 2, 2);
-    }gsfgdg
+    }
     if (x <= 0 && y <= 0) {
       return x >= -r && y >= -r / 2;
     }
